@@ -7,25 +7,26 @@
 <center><img src="images/logo.jpg" width="400" /></center>
 
 <table class="table">
-    <thread>
+    <thead>
         <tr>
             <th>From</th>
             <th>Subject</th>
             <th>Date/Time</th>
             <th>Delete</th>
         </tr>
-    </thread>
-
+    </thead>
     <tbody>
         @foreach (var item in Model.listEmails)
         {
             <tr>
                 <td>@item.EmailSender</td>
                 <td>
-                    @if (item.EmailIsRead.Equals("0")) {
-                        <img src="images/yellow.gif" height="10pt"> 
-                    } 
-                    <a href="ReadEmail?emailid=@item.EmailID">@item.EmailSubject</a></td>
+                    @if (item.EmailIsRead.Equals("0"))
+                    {
+                        <img src="images/yellow.gif" height="10pt">
+                    }
+                    <a href="ReadEmail?emailid=@item.EmailID">@item.EmailSubject</a>
+                </td>
                 <td>@item.EmailDate</td>
                 <td>
                     <a class="btn btn-primary btn-sm" href="DeleteEmail?emailid=@item.EmailID">Delete</a>
@@ -34,4 +35,6 @@
         }
     </tbody>
 </table>
-<a class="btn btn-primary btn-sm" href="/ComposeMail?Sender=@User.Identity.Name">Compose New Email</a>
+<div class="text-right mb-3">
+    <a asp-page="compose" class="btn btn-success">Compose New Email</a>
+</div>
