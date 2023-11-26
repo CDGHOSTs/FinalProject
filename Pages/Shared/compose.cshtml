@@ -8,9 +8,45 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Compose New Email</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    </head>
+    <body>
+
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="username-compose-container">
+                        <h2 class="text-center ">New Message</h2>
+                        <form>
+                            <div class="form-group">
+                                <label for="to" class="font-weight-bold">To:</label>
+                                <input type="username" class="form-control" id="to" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="subject" class="font-weight-bold">Subject:</label>
+                                <input type="text" class="form-control" id="subject" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message" class="font-weight-bold">Message:</label>
+                                <textarea class="form-control" id="message" rows="6" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block btn-light text-danger flex-fill mr-1 font-weight-bold">Send</button>
+                            <a href="/Index" class="btn btn-primary btn-block btn-light text-danger flex-fill font-weight-bold">Home</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <style>
+            /* เพิ่ม CSS สำหรับปุ่ม Home */
+            .btn-primary {
+                font-size: 18px;
+                margin-top: 10px;
+            }
+
             body {
-                background-color: #fff;
+                background-color: #9D0000;
+                color: #FFFFFF;
             }
 
             .email-compose-container {
@@ -21,37 +57,14 @@
                 box-shadow: 0 4px 8px rgba(0,0,0,.05);
             }
 
-            .form-control, .btn {
-                margin-bottom: 15px;
+            h2.text-center {
+                color: #FFFFFF;
+            }
+
+            label {
+                color: #FFFFFF;
             }
         </style>
-    </head>
-    <body>
-
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <div class="email-compose-container">
-                        <h2 class="text-center">New Message</h2>
-                        <form>
-                            <div class="form-group">
-                                <label for="to">To:</label>
-                                <input type="email" class="form-control" id="to" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="subject">Subject:</label>
-                                <input type="text" class="form-control" id="subject" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="message">Message:</label>
-                                <textarea class="form-control" id="message" rows="6" required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block">Send</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
