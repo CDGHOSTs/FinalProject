@@ -56,19 +56,19 @@ namespace FinalProject.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [StringLength(255, ErrorMessage = "The First Name must be in between 1 to 255.", MinimumLength = 1)]
+            [StringLength(60, ErrorMessage = "The First Name must be in between 1 to 60.", MinimumLength = 1)]
             public string FirstName { get; set; }
 
             [Required]
-            [StringLength(255, ErrorMessage = "The Last Name must be in between 1 to 255.", MinimumLength = 1)]
+            [StringLength(60, ErrorMessage = "The Last Name must be in between 1 to 60.", MinimumLength = 1)]
             public string LastName { get; set; }
 
             [Required]
-            [StringLength(15, ErrorMessage = "The Mobile Phone must be in between 7 to 15.", MinimumLength = 7)]
+            [RegularExpression(@"^\d{10}$", ErrorMessage = "The Mobile Phone must be  10 digits.")]
             public string MobilePhone { get; set; }
 
             [Required]
-            [StringLength(255, ErrorMessage = "The Username must be between 1 to 255.", MinimumLength = 1)]
+            [StringLength(60, ErrorMessage = "The Username must be between 1 to 60.", MinimumLength = 1)]
             public string UserName { get; set; }
 
             [Required]

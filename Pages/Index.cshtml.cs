@@ -19,6 +19,32 @@ namespace FinalProject.Pages
             _logger = logger;
         }
 
+        public IActionResult OnGetDeleteEmail(int emailid)
+        {
+            try
+            {
+                String connectionString = "Server=tcp:bankfinalproject.database.windows.net,1433;Initial Catalog=finalproject;Persist Security Info=False;User ID=bank;password=123456#B;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"; // Update with your connection string
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    String sql = "DELETE FROM emails WHERE EmailID = @EmailID";
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@EmailID", emailid);
+                        command.ExecuteNonQuery();
+                    }
+                }
+
+                return RedirectToPage("/Index");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return Page(); // You might want to handle errors more gracefully
+            }
+        }
+
         public void OnGet()
         {
             try
@@ -57,7 +83,6 @@ namespace FinalProject.Pages
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
-                // Handle exceptions
             }
         }
     }

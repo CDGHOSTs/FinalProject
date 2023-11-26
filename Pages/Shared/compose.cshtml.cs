@@ -1,52 +1,137 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Net.Mail;
+using System;
+using System.Data.SqlClient;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Microsoft.Data.SqlClient;
+using System.ComponentModel.DataAnnotations;
 
 namespace FinalProject.Pages
 {
     public class composeModel : PageModel
     {
-        public IActionResult OnPostSendMessage(string to, string subject, string message)
+        private readonly ILogger<composeModel> _logger;
+        [BindProperty]
+        public EmailInfo NewEmail { get; set; }
+
+        public composeModel(ILogger<composeModel> logger)
         {
-            // ตรวจสอบว่ามีข้อมูลอยู่ใน to, subject, และ message หรือไม่
-            if (!string.IsNullOrEmpty(to) && !string.IsNullOrEmpty(subject) && !string.IsNullOrEmpty(message))
+            _logger = logger;
+        }
+
+        public void OnGet()
+        {
+            // This method is intentionally left empty.
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (!ModelState.IsValid)
             {
-                // สร้างอ็อบเจ็กต์ของคลาส MailMessage เพื่อสร้างอีเมล์
-                MailMessage mail = new MailMessage();
-                mail.From = new MailAddress("your-email@example.com"); // อีเมล์ผู้ส่ง
-                mail.To.Add(to); // อีเมล์ผู้รับ
-                mail.Subject = subject; // เรื่อง
-                mail.Body = message; // ข้อความ
+                return Page();
+            }
 
-                // ส่งอีเมล์โดยใช้ SMTP server
-                SmtpClient smtpClient = new SmtpClient("your-smtp-server.com");
-                smtpClient.Port = 587; // Port ของ SMTP server
-                smtpClient.Credentials = new System.Net.NetworkCredential("your-username", "your-password"); // ข้อมูลการเข้าสู่ระบบของ SMTP server
-                smtpClient.EnableSsl = true; // เปิดใช้งาน SSL
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Shared/sendfail");
+            }
 
-                // พยายามส่งอีเมล์
-                try
-                {
-                    smtpClient.Send(mail);
-                    return RedirectToPage("/Index"); // ส่งผู้ใช้กลับไปที่หน้า Index หลังจากส่งอีเมล์เรียบร้อย
-                }
-                catch (Exception ex)
-                {
-                    // หากเกิดข้อผิดพลาดในการส่งอีเมล์
-                    ModelState.AddModelError(string.Empty, "Error sending email: " + ex.Message);
-                    return Page(); // แสดงหน้า compose อีกครั้งเพื่อให้ผู้ใช้ลองส่งอีเมล์อีกครั้ง
-                }
-                finally
-                {
-                    // ปิดการเชื่อมต่อ SMTP
-                    smtpClient.Dispose();
-                }
+            bool recipientExists = await CheckRecipientExistsAsync(NewEmail.EmailReceiver);
+
+            if (!recipientExists)
+            {
+                ModelState.AddModelError("", "Recipient email does not exist in the database.");
+                return Page();
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Please provide recipient, subject, and message."); // ถ้าข้อมูลไม่ครบถ้วน
-                return Page(); // แสดงหน้า compose อีกครั้งเพื่อให้ผู้ใช้ลองกรอกข้อมูลใหม่
+                try
+                {
+                    String connectionString = "Server=tcp:bankfinalproject.database.windows.net,1433;Initial Catalog=finalproject;Persist Security Info=False;User ID=bank;password=123456#B;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+                    using (var connection = new SqlConnection(connectionString))
+                    {
+                        await connection.OpenAsync();
+                        var sql = @"
+                            INSERT INTO emails (Emailsubject, Emailmessage, Emaildate, Emailisread, Emailsender, Emailreceiver) 
+                            VALUES (@Subject, @Message, GETDATE(), @IsRead, @Sender, @Receiver)";
+
+                        using (var command = new SqlCommand(sql, connection))
+                        {
+                            command.Parameters.AddWithValue("@Subject", NewEmail.EmailSubject);
+                            command.Parameters.AddWithValue("@Message", NewEmail.EmailMessage);
+                            command.Parameters.AddWithValue("@IsRead", "0");
+                            command.Parameters.AddWithValue("@Sender", User.Identity.Name);
+                            command.Parameters.AddWithValue("@Receiver", NewEmail.EmailReceiver);
+
+                            var result = await command.ExecuteNonQueryAsync();
+                            if (result > 0)
+                            {
+                                _logger.LogInformation("Email sent successfully.");
+                                TempData["SuccessMessage"] = "Email sent successfully.";
+                                return RedirectToPage("/Shared/sendsuccess");
+                            }
+                            else
+                            {
+                                _logger.LogWarning("Failed to insert email record.");
+                                ModelState.AddModelError("", "Failed to send email.");
+                                return Page();
+                            }
+                        }
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    _logger.LogError($"An SQL error occurred: {ex.Message}");
+                    ModelState.AddModelError("", "A database error occurred.");
+                    return Page();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"An error occurred: {ex.Message}");
+                    ModelState.AddModelError("", "An error occurred while sending the email.");
+                    return Page();
+                }
             }
+        }
+
+        private async Task<bool> CheckRecipientExistsAsync(string recipientEmail)
+        {
+            try
+            {
+                String connectionString = "Server=tcp:bankfinalproject.database.windows.net,1433;Initial Catalog=finalproject;Persist Security Info=False;User ID=bank;password=123456#B;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+                    var emailExistsQuery = "SELECT COUNT(*) FROM emails WHERE emailreceiver = @Receiver";
+                    using (var emailExistsCommand = new SqlCommand(emailExistsQuery, connection))
+                    {
+                        emailExistsCommand.Parameters.AddWithValue("@Receiver", recipientEmail);
+                        var emailExists = (int)await emailExistsCommand.ExecuteScalarAsync();
+
+                        return emailExists > 0;
+                    }
+                }
+            }
+            catch (SqlException)
+            {
+                return false;
+            }
+        }
+
+        public class EmailInfo
+        {
+            [Required]
+            [Display(Name = "Subject")]
+            public string EmailSubject { get; set; }
+
+            [Required]
+            [Display(Name = "Message")]
+            public string EmailMessage { get; set; }
+
+            [Required]
+            [Display(Name = "Receiver")]
+            public string EmailReceiver { get; set; }
         }
     }
 }
