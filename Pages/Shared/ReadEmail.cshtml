@@ -1,0 +1,34 @@
+﻿@page "{emailId:int}"
+@model FinalProject.Pages.ReadEmailModel
+@{
+    ViewData["Title"] = "Read Email";
+    Layout = "~/Pages/Shared/_Layout.cshtml"; // Assuming you have a layout file
+}
+
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <h2 class="text-center">Read Email</h2>
+
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p><strong>From:</strong> @Model.Emaillist?.EmailSender</p>
+                </div>
+                <div>
+                    <p><strong>Date:</strong> @Model.Emaillist?.EmailDate</p>
+                </div>
+            </div>
+            <hr />
+            <div class="text-left">
+                <p><strong>Subject:</strong> @Model.Emaillist?.EmailSubject</p>
+                <p><strong>Message:</strong> @Model.Emaillist?.EmailMessage</p>
+            </div>
+
+            <div class="text-center mt-4">
+                <a class="btn btn-primary mr-2" asp-page="/Reply">Reply</a> <!-- Added Reply button -->
+                <a class="btn btn-primary mr-2" asp-page="/Index">Back to Inbox</a>
+                <a class="btn btn-danger" asp-page="/Delete">Delete</a> <!-- Added Delete button -->
+            </div>
+        </div>
+    </div>
+</div>

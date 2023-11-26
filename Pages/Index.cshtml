@@ -15,6 +15,7 @@
             <th>Delete</th>
         </tr>
     </thead>
+
     <tbody>
         @foreach (var item in Model.listEmails)
         {
@@ -23,7 +24,7 @@
                 <td>
                     @if (item.EmailIsRead.Equals("0"))
                     {
-                        <img src="images/yellow.gif" height="10pt">
+                        <a href="ReadEmail/@item.EmailID"><img src="images/yellow.gif" height="10pt">@item.EmailSubject </a>
                     }
                     <a href="ReadEmail?emailid=@item.EmailID">@item.EmailSubject</a>
                 </td>
