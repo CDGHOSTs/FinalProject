@@ -8,14 +8,14 @@
 <h3>@ViewData["Title"]</h3>
 
 <form id="account" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-light" role="alert"></div>
+    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
     <table>
         <tr>
             <td>Username</td>
             <td>
                 <div class="form-floating">
                     <input asp-for="Input.UserName" class="form" autocomplete="username" aria-required="true" />
-                    <span asp-validation-for="Input.UserName" class="text-light"></span>
+                    <span asp-validation-for="Input.UserName" class="text-danger"></span>
                 </div>
             </td>
         </tr>
@@ -24,7 +24,7 @@
             <td>
                 <div class="form-floating">
                     <input asp-for="Input.Password" class="form" autocomplete="current-password" aria-required="true" />
-                    <span asp-validation-for="Input.Password" class="text-light"></span>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
             </td>
         </tr>
@@ -34,27 +34,6 @@
             </td>
         </tr>
     </table>
-
-    <style>
-
-    #loginForm {
-        margin: 0 auto;
-        width: 60%; 
-        padding: 20px; 
-    }
-
-    .form-table tr:not(:last-child) td {
-        padding-bottom: 15px;
-    }
-
-    #login-submit {
-            display: block;
-            width: 200px;
-            margin-top: 20px;
-            font-weight: bold;
-    }
-</style>
-
 </form>
 
 @section Scripts {

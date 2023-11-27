@@ -2,7 +2,7 @@
 @model FinalProject.Pages.ReadEmailModel
 @{
     ViewData["Title"] = "Read Email";
-    Layout = "Shared/_Layout"; // Assuming you have a layout file
+    Layout = "~/Pages/Shared/_Layout.cshtml"; // Assuming you have a layout file
 }
 
 <div class="container">
@@ -26,7 +26,6 @@
             </div>
 
             <div class="text-center mt-4">
-                <a class="btn btn-primary mr-2" asp-page="/Reply">Reply</a>
                 <a class="btn btn-primary mr-2" asp-page="/Index">Back to Inbox</a>
                 <a class="btn btn-danger delete-email" data-emailid="@Model.Email.EmailID">Delete</a>
             </div>
@@ -52,4 +51,3 @@
         });
     </script>
 }
-

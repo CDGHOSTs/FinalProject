@@ -34,7 +34,7 @@ namespace FinalProject.Pages
                     String deleteQuery = "DELETE FROM emails WHERE EmailID = @EmailID";
                     using (SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection))
                     {
-                        deleteCommand.Parameters.AddWithValue("@    ID", emailId);
+                        deleteCommand.Parameters.AddWithValue("@EmailID", emailId);
                         deleteCommand.ExecuteNonQuery();
                     }
                 }

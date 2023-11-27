@@ -98,6 +98,8 @@ namespace FinalProject.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
+                // This doesn't count login failures towards account lockout
+                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
@@ -116,9 +118,7 @@ namespace FinalProject.Areas.Identity.Pages.Account
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-
-                    // Redirect to loginfail page
-                    return RedirectToPage("/Shared/loginfail");
+                    return Page();
                 }
             }
 

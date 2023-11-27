@@ -1,8 +1,7 @@
-﻿using FinalProject.Areas.Identity.Data;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -18,6 +17,7 @@ namespace FinalProject.Pages
         {
             _logger = logger;
         }
+
 
         public IActionResult OnGetDeleteEmail(int emailid)
         {

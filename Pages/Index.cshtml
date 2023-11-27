@@ -15,7 +15,6 @@
             <th>Delete</th>
         </tr>
     </thead>
-
     <tbody>
         @foreach (var item in Model.listEmails)
         {
@@ -33,17 +32,17 @@
                 </td>
                 <td>@item.EmailDate</td>
                 <td>
-                    <a class="btn btn-primary btn-sm btn-danger text-light delete-email" data-emailid="@item.EmailID">Delete</a>
+                    <a class="btn btn-primary btn-sm delete-email" data-emailid="@item.EmailID">Delete</a>
+
                 </td>
             </tr>
         }
     </tbody>
 </table>
-<div class="text-right mb-3">
-    <a href="Shared/compose" class="btn btn-success btn-light text-danger font-weight-bold"><strong>Compose New Email</strong></a>
-</div>
+<a class="btn btn-primary btn-sm btn-danger text-light" href="/ComposeEmail?username=@User.Identity.Name">Compose New Email</a>
 
-    @section Scripts {
+
+@section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const deleteButtons = document.querySelectorAll(".delete-email");
