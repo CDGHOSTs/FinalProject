@@ -10,23 +10,21 @@
         <div class="col-md-6">
             <h2 class="text-center">Reading Email</h2>
 
-            <div class="d-flex justify-content-between">
-                <div>
-                    <p><strong>From:</strong> @Model.Email?.EmailSender</p>
-                </div>
-                <div>
-                    <p><strong>Date:</strong> @Model.Email?.EmailDate</p>
-                </div>
+            <div>
+                <p><strong>From:</strong> @Model.Email?.EmailSender</p>
             </div>
-            <hr />
-
-            <div class="text-left">
+            <div>
+                <p><strong>Date:</strong> @Model.Email?.EmailDate</p>
+            </div>
+            <div>
                 <p><strong>Subject:</strong> @Model.Email?.EmailSubject</p>
+            </div>
+            <div>
                 <p><strong>Message:</strong> @Model.Email?.EmailMessage</p>
             </div>
 
             <div class="text-center mt-4">
-                <a class="btn btn-primary mr-2 btn-light text-danger" asp-page="/Index" style="font-weight: bold;">Home</a>
+                <a class="btn btn-primary mr-2 btn-light text-danger font-weight-bold" asp-page="/Index">Home</a>
             </div>
         </div>
     </div>
