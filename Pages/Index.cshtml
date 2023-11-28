@@ -50,14 +50,16 @@
                     }
                 </td>
                 <td>
-                    <a class="btn btn-primary btn-sm btn-light text-danger" href="ReadEmail/@item.EmailID">Read</a>
-                    <a class="btn btn-primary btn-sm btn-light text-danger delete-email" data-emailid="@item.EmailID">Delete</a>
+                    <a class="btn btn-primary btn-sm btn-light text-danger" href="ReadEmail/@item.EmailID" style="font-weight: bold;">Read</a>
+                    <a class="btn btn-primary btn-sm btn-light text-danger delete-email" data-emailid="@item.EmailID" style="font-weight: bold;">Delete</a>
+
                 </td>
             </tr>
         }
     </tbody>
 </table>
-<a class="btn btn-primary btn-sm btn-danger text-light" href="/ComposeEmail?username=@User.Identity.Name">Compose New Email</a>
+<a class="btn btn-primary btn-sm btn-danger text-light" href="/ComposeEmail?username=@User.Identity.Name" style="font-weight: bold;">Compose New Email</a>
+
 
 @section Scripts {
     <script>
