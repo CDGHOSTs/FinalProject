@@ -12,34 +12,52 @@
             <th>From</th>
             <th>Subject</th>
             <th>Date/Time</th>
-            <th>Delete</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.listEmails)
         {
             <tr>
-                <td>@item.EmailSender</td>
                 <td>
                     @if (item.EmailIsRead.Equals("0"))
                     {
-                        <a href="ReadEmail/@item.EmailID"><img src="images/yellow.gif" height="10pt"> @item.EmailSubject </a>
+                        <span class="unread-email" style="color: #FFD700;">@item.EmailSender </span>
                     }
                     else
                     {
-                        <a href="ReadEmail/@item.EmailID">@item.EmailSubject</a>
+                        <span>@item.EmailSender</span>
                     }
                 </td>
-                <td>@item.EmailDate</td>
                 <td>
-                    <a class="btn btn-primary btn-sm delete-email" data-emailid="@item.EmailID">Delete</a>
+                    @if (item.EmailIsRead.Equals("0"))
+                    {
+                        <span class="unread-email" style="color: #FFD700;">@item.EmailSubject </span>
+                    }
+                    else
+                    {
+                        <span>@item.EmailSubject</span>
+                    }
+                </td>
+                <td>
+                    @if (item.EmailIsRead.Equals("0"))
+                    {
+                        <span class="unread-email" style="color: #FFD700;">@item.EmailDate </span>
+                    }
+                    else
+                    {
+                        <span>@item.EmailDate</span>
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-primary btn-sm btn-light text-danger" href="ReadEmail/@item.EmailID">Read</a>
+                    <a class="btn btn-primary btn-sm btn-light text-danger delete-email" data-emailid="@item.EmailID">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 <a class="btn btn-primary btn-sm btn-danger text-light" href="/ComposeEmail?username=@User.Identity.Name">Compose New Email</a>
-
 
 @section Scripts {
     <script>
