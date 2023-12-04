@@ -19,47 +19,26 @@
         @foreach (var item in Model.listEmails)
         {
             <tr>
+                <td>@item.EmailSender</td>
                 <td>
                     @if (item.EmailIsRead.Equals("0"))
                     {
-                        <span class="unread-email" style="color: #FFD700;">@item.EmailSender </span>
+                        <a href="ReadEmail/@item.EmailID"><img src="images/yellow.gif" height="10pt"> @item.EmailSubject </a>
                     }
                     else
                     {
-                        <span>@item.EmailSender</span>
+                        <a href="ReadEmail/@item.EmailID">@item.EmailSubject</a>
                     }
                 </td>
+                <td>@item.EmailDate</td>
                 <td>
-                    @if (item.EmailIsRead.Equals("0"))
-                    {
-                        <span class="unread-email" style="color: #FFD700;">@item.EmailSubject </span>
-                    }
-                    else
-                    {
-                        <span>@item.EmailSubject</span>
-                    }
-                </td>
-                <td>
-                    @if (item.EmailIsRead.Equals("0"))
-                    {
-                        <span class="unread-email" style="color: #FFD700;">@item.EmailDate </span>
-                    }
-                    else
-                    {
-                        <span>@item.EmailDate</span>
-                    }
-                </td>
-                <td>
-                    <a class="btn btn-primary btn-sm btn-light text-danger" href="ReadEmail/@item.EmailID" style="font-weight: bold;">Read</a>
-                    <a class="btn btn-primary btn-sm btn-light text-danger delete-email" data-emailid="@item.EmailID" style="font-weight: bold;">Delete</a>
-
+                    <a class="btn btn-primary btn-sm btn-light text-danger delete-email" data-emailid="@item.EmailID">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-<a class="btn btn-primary btn-sm btn-danger text-light" href="/ComposeEmail?username=@User.Identity.Name" style="font-weight: bold;">Compose New Email</a>
-
+<a class="btn btn-primary btn-sm btn-danger text-light" href="/ComposeEmail?username=@User.Identity.Name">Compose New Email</a>
 
 @section Scripts {
     <script>
@@ -72,7 +51,7 @@
                     const confirmDelete = confirm("Are you sure you want to delete this email?");
 
                     if (confirmDelete) {
-                        window.location.href = `/Index?handler=DeleteEmail&emailid=${emailId}`;
+                        window.location.href = /Index?handler=DeleteEmail&emailid=${emailId};
                     }
                 });
             });
